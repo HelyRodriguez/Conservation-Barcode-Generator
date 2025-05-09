@@ -5,9 +5,11 @@ First Time Usage:
 This script is written with Python 3.9 and relies on the pandas and matplotlib libraries. If you have just downloaded Python 3.9 and these libraries are not installed, or you are not sure if you have them installed, uncomment the following lines in the script by removing the two lines above and below them containing 3 single-quote characters. These lines will then be executed upon running the script and will install the pandas and matplotlib libraries if not already installed.
 
 '''
+
 os.system('python -m pip install pandas')
 
 os.system('python -m pip install matplotlib')
+
 '''
 
 1. Place your consurf.pdb in the same working directory as Conservation_Barcoder.py
