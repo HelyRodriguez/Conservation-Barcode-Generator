@@ -6,6 +6,7 @@ This script is written with Python 3.9 and relies on the pandas and matplotlib l
 
 '''
 os.system('python -m pip install pandas')
+
 os.system('python -m pip install matplotlib')
 '''
 
