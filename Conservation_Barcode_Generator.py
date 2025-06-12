@@ -1,15 +1,24 @@
 import os
-'''
+
 os.system('python -m pip install pandas')
 os.system('python -m pip install matplotlib')
-'''
+
 
 import pandas as pd
 import csv
 import matplotlib
 import matplotlib.pyplot as plt
 
-my_consurf_pdb = input("Enter name of consurf .pdb file (e.g. uhrf1bp1_consurf.pdb): ")
+from tkinter.filedialog import askopenfilename
+my_consurf_pdb = askopenfilename()
+
+def get_text_after_last_slash(text):
+    # Split the text by the forward slash and return the last part
+    global my_consurf_pdb
+    my_consurf_pdb = text.split('/')[-1]
+
+get_text_after_last_slash(my_consurf_pdb)
+
 my_consurf_csv = my_consurf_pdb[:-3] + "csv"
 conservation_scores = []
 
