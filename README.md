@@ -9,7 +9,12 @@ Usage:
 This script was written in Python 3.9 and relies on the pandas and matplotlib libraries. If they are not installed, this script will automatically install them for you.
 
 1. Run Conservation_Barcode_Generator.py with Python 3.9
-2. Upon being prompted, select your consurf.pdb
+2. Upon being prompted, select your consurf.pdb (example PDB included; BLTP3A_consurf.pdb)
 3. After running, check your working directory for a new file called "colored_rectangles.py"
 4. Run colored_rectangles.py to display your figure.
-5. Save the figure in the desired file format (.svg best for figure preparation)
+
+
+![BLTP3A_2D_consurf_map_example_output](https://github.com/user-attachments/assets/3e63f8b0-36bd-45db-be81-7629e6336e8b)
+
+
+6. Save the figure in the desired file format (.svg best for figure preparation)
