@@ -1,8 +1,8 @@
 import os
-'''
+
 os.system('python -m pip install pandas')
 os.system('python -m pip install matplotlib')
-'''
+
 
 import pandas as pd
 import csv
