@@ -1,8 +1,8 @@
 import os
-
+'''
 os.system('python -m pip install pandas')
 os.system('python -m pip install matplotlib')
-
+'''
 
 import pandas as pd
 import csv
@@ -10,19 +10,20 @@ import matplotlib
 import matplotlib.pyplot as plt
 
 from tkinter.filedialog import askopenfilename
-my_consurf_pdb = askopenfilename()
+my_consurf_file = askopenfilename()
+my_consurf_pdb = ''
 
 def get_text_after_last_slash(text):
     # Split the text by the forward slash and return the last part
     global my_consurf_pdb
     my_consurf_pdb = text.split('/')[-1]
 
-get_text_after_last_slash(my_consurf_pdb)
+get_text_after_last_slash(my_consurf_file)
 
 my_consurf_csv = my_consurf_pdb[:-3] + "csv"
 conservation_scores = []
 
-with open(my_consurf_pdb) as fin, open(my_consurf_csv, 'w') as fout:
+with open(my_consurf_file) as fin, open(my_consurf_csv, 'w') as fout:
     o=csv.writer(fout)
     lines = fin.readlines()
     #count for index distance of current line from line with "MODEL        1" in it
@@ -30,6 +31,13 @@ with open(my_consurf_pdb) as fin, open(my_consurf_csv, 'w') as fout:
     o.writerow('abcdefxyzjk\n')
     for i in range(len(lines)):
         if "MODEL        1"  in lines[i-x]:
+            for j in range(len(lines[i])):
+                if "O1-" in lines[i]:
+                    lines[i] = lines[i].replace("O1-", "O1n")
+                if lines[i][j] == "-" and lines[i][j-1] != " ":
+                    lines[i] = lines[i].replace(lines[i][j], " -")
+                    #print(lines[i])
+
             if "A1" in lines[i]:
                 lines[i] = lines[i].replace("A1", "A 1")
             if "A2" in lines[i]:
@@ -55,9 +63,9 @@ with open(my_consurf_pdb) as fin, open(my_consurf_csv, 'w') as fout:
 fin.close()
 fout.close()
 
-def remove_blank_rows(input_filepath, output_filepath):
+def remove_blank_and_dup_rows(input_filepath, output_filepath):
     """
-    Removes blank rows from a CSV file.
+    Removes blank and duplicate rows from the consurf CSV file.
 
     Args:
         input_filepath (str): Path to the input CSV file.
@@ -67,48 +75,39 @@ def remove_blank_rows(input_filepath, output_filepath):
             open(output_filepath, 'w', newline='') as outfile:
         reader = csv.reader(infile)
         writer = csv.writer(outfile)
+        coordinates = ['0', '0', '0']
         for row in reader:
-            if any(field.strip() for field in row): #Check if any field in the row is not blank
+            if row[6:9] != coordinates and any(field.strip() for field in row):
                 writer.writerow(row)
+                coordinates = row[6:9]
 
 # Example usage of remove_blank_rows(input_filepath, output_filepath)
 input_csv_path = my_consurf_csv
 output_csv_path = 'INPUT_' + my_consurf_csv
-remove_blank_rows(input_csv_path, output_csv_path)
+remove_blank_and_dup_rows(input_csv_path, output_csv_path)
 os.remove(my_consurf_csv)
 
-conservation_scores = []
 
-df = pd.read_csv(output_csv_path)
-for index, row in df.iterrows():
-    if row["c"] == "CA":
-        conservation_scores.append(row["k"])
-
-for i in range(len(conservation_scores)):
-    conservation_scores[i] = str(conservation_scores[i])
-    if '*' in conservation_scores[i]:
-        conservation_scores[i] = conservation_scores[i].replace('*', '')
-        
-print(len(conservation_scores))
-
-
-
-
+float_string_conservation_scores = []
 #parse through .csv above and extract conservation scores into a list
 df = pd.read_csv(output_csv_path)
 for index, row in df.iterrows():
     if row["c"] == "CA":
-        conservation_scores.append(row["k"])
+        float_string_conservation_scores.append(row["k"])
 #clean up conservation score list
-for i in range(len(conservation_scores)):
+for i in range(len(float_string_conservation_scores)):
     #print(i)
-    conservation_scores[i] = str(conservation_scores[i])
-    if '*' in conservation_scores[i]:
-        conservation_scores[i] = conservation_scores[i].replace('*', '')
+    float_string_conservation_scores[i] = str(float_string_conservation_scores[i])
+    if '*' in float_string_conservation_scores[i]:
+        float_string_conservation_scores[i] = float_string_conservation_scores[i].replace('*', '')
         
+print(float_string_conservation_scores)
+print(len(float_string_conservation_scores))
+conservation_scores = [str(int(float(num))) for num in float_string_conservation_scores]
 print(conservation_scores)
+print(len(conservation_scores))
 
-x = 50
+x = 0
 y = 50
 
 #create a new python script to execute plotting of colored rectangles/conservation "barcode"
@@ -120,7 +119,7 @@ with open("colored_rectangles.py", "w") as file:
     file.write("import matplotlib.pyplot as plt\n")
     file.write("fig = plt.figure()\n")
     file.write("ax = fig.add_subplot(111)\n")
-    file.write("ax.set_xlim([0, " + str(len(conservation_scores)+100) + "])\n")
+    file.write("ax.set_xlim([-100, " + str(len(conservation_scores)+100) + "])\n")
     file.write("ax.set_ylim([0, 200])\n")
     
     for i in range(len(conservation_scores)):
