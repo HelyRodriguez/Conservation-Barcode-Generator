@@ -1,7 +1,7 @@
 # Conservation-Barcode-Generator
 This repository houses a script for generating a 2D linear conservation map, or conservation barcode, using a Consurf PDB file generated from the Consurf web server as the input file. This script was used to generate the 2D conservation map shown in Figure 1A of the following study: 
 ----------------------------------------------------------------------------------------------
-Hanna, M. G., Rodriguez Cruz, H. O., Fujise, K., Wu, Y., Shan Xu, C., Pang, S., Li, Z., Monetti, M., De Camilli, P. (2024). BLTP3A is associated with membranes of the late endocytic pathway and is an effector of CASM. bioRxiv. https://doi.org/10.1101/2024.09.28.615015
+Hanna, M. G., Rodriguez Cruz, H. O., Fujise, K., Wu, Y., Shan Xu, C., Pang, S., Li, Z., Monetti, M., De Camilli, P. (2024). BLTP3A is associated with membranes of the late endocytic pathway and is an effector of CASM. _The EMBO Journal_. [https://doi.org/10.1101/2024.09.28.615015](https://doi.org/10.1038/s44318-025-00543-9)
 
 If you use this tool, please use the following DOI to cite this repository: https://doi.org/10.5281/zenodo.15652924
 ----------------------------------------------------------------------------------------------
